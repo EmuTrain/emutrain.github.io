@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmuTrain | AIO & Travel 铁路系列</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 添加抖音图标支持 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/brands.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        :root {
+            --primary-dark: #0a0c1a;
+            --secondary-dark: #121828;
+            --card-dark: #1a2238;
+            --accent-blue: #3a86ff;
+            --accent-cyan: #00d4ff;
+            --accent-green: #4cc9f0;
+            --accent-purple: #9d4edd;
+            --accent-orange: #ff9e00;
+            --text-light: #e2e2e2;
+            --text-gray: #a0a8c0;
+            --rail-gray: #2a344a;
+        }
+        
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏 */
+        header {
+            background-color: rgba(10, 12, 26, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(58, 134, 255, 0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin-left: 30px;
+        }
+        
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--accent-cyan);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            transition: width 0.3s;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            margin-top: 100px;
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* 应用对比区域 */
+        .apps-comparison {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+        
+        .section-title p {
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .apps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        @media (max-width: 1100px) {
+            .apps-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .app-card {
+            background-color: var(--card-dark);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .app-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .app-header {
+            padding: 40px 40px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-right: 25px;
+        }
+        
+        .aio-icon {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+        }
+        
+        .travel-icon {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-orange));
+        }
+        
+        .app-title h2 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .app-title p {
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+        
+        .app-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+        
+        .available {
+            background-color: rgba(76, 201, 240, 0.2);
+            color: var(--accent-green);
+        }
+        
+        .developing {
+            background-color: rgba(255, 158, 0, 0.2);
+            color: var(--accent-orange);
+        }
+        
+        .app-body {
+            padding: 30px 40px;
+        }
+        
+        .app-features {
+            margin-bottom: 30px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+        
+        .aio-feature .feature-icon {
+            background-color: rgba(58, 134, 255, 0.2);
+            color: var(--accent-blue);
+        }
+        
+        .travel-feature .feature-icon {
+            background-color: rgba(157, 78, 221, 0.2);
+            color: var(--accent-purple);
+        }
+        
+        .feature-text h4 {
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .feature-text p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+        
+        .app-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(58, 134, 255, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .btn-disabled {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-gray);
+            cursor: not-allowed;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        /* 技术架构部分 */
+        .architecture {
+            padding: 100px 0;
+            background-color: var(--secondary-dark);
+        }
+        
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .arch-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            transition: transform 0.3s;
+        }
+        
+        .arch-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .arch-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+        }
+        
+        .arch-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .arch-card p {
+            color: var(--text-gray);
+            margin-bottom: 20px;
+        }
+        
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .tech-tag {
+            background-color: rgba(58, 134, 255, 0.1);
+            color: var(--accent-blue);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        /* 下载区域 */
+        .download {
+            padding: 100px 0;
+            background-color: var(--secondary-dark);
+        }
+        
+        .download-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+        
+        .download-content p {
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 1100px) {
+            .download-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .download-card {
+            background-color: var(--card-dark);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .download-card-header {
+            padding: 30px 30px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .download-card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-right: 20px;
+        }
+        
+        .download-card-title h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .download-card-title p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+        
+        .download-card-body {
+            padding: 30px;
+        }
+        
+        .download-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .download-link {
+            display: flex;
+            align-items: center;
+            padding: 18px 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-light);
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .download-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .download-link.disabled {
+            background-color: rgba(255, 255, 255, 0.02);
+            color: var(--text-gray);
+            cursor: not-allowed;
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .download-link.disabled:hover {
+            transform: none;
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+        
+        .link-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+        
+        .github-icon {
+            background-color: rgba(24, 23, 23, 0.3);
+            color: #f0f6fc;
+        }
+        
+        .gitee-icon {
+            background-color: rgba(193, 36, 50, 0.2);
+            color: #c51e32;
+        }
+        
+        .qq-icon {
+            background-color: rgba(0, 153, 255, 0.2);
+            color: #12b7f5;
+        }
+        
+        .link-text h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .link-text p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+        
+        .disabled .link-text p {
+            color: #6c757d;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--primary-dark);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--rail-gray);
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .footer-about {
+            flex: 1;
+            min-width: 300px;
+            margin-right: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-about p {
+            color: var(--text-gray);
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .link-group {
+            margin-right: 60px;
+            margin-bottom: 30px;
+        }
+        
+        .link-group h4 {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .link-group ul {
+            list-style: none;
+        }
+        
+        .link-group li {
+            margin-bottom: 10px;
+        }
+        
+        .link-group a {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .link-group a:hover {
+            color: var(--accent-cyan);
+        }
+        
+        .social-icons {
+            display: flex;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            margin-right: 15px;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-3px);
+        }
+        
+        .social-icon.github:hover {
+            background-color: #333;
+            color: white;
+        }
+        
+        .social-icon.douyin:hover {
+            background-color: #000;
+            color: #69C9D0;
+        }
+        
+        .social-icon.qq:hover {
+            background-color: #12B7F5;
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--rail-gray);
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--secondary-dark);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            }
+            
+            nav ul.active {
+                display: flex;
+            }
+            
+            nav li {
+                margin: 10px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .apps-container, .download-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-header, .download-card-header {
+                padding: 30px 20px 20px;
+            }
+            
+            .app-body, .download-card-body {
+                padding: 20px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .footer-about {
+                margin-right: 0;
+            }
+            
+            .download-link {
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .app-title h2, .download-card-title h3 {
+                font-size: 1.5rem;
+            }
+            
+            .app-actions {
+                flex-direction: column;
+            }
+        }
+        
+        /* 抖音图标特殊处理 */
+        .fa-douyin:before {
+            content: "Tik";
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .social-icon.douyin {
+            position: relative;
+        }
+        
+        .social-icon.douyin:after {
+            content: "";
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background-color: #69C9D0;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container nav-container">
+            <div class="logo">
+                <i class="fas fa-layer-group"></i>
+                EmuTrain
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#apps">应用介绍</a></li>
+                    <li><a href="#architecture">技术架构</a></li>
+                    <li><a href="#download">下载与社区</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>EmuTrain铁路查询系列</h1>
+                <p>EmuAIO 是一款功能全面的动车组信息查询工具，EmuTravel 是正在开发的列车旅途小助手，两者共同构成铁路爱好者的实用工具。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 应用对比区域 -->
+    <section class="apps-comparison" id="apps">
+        <div class="container">
+            <div class="section-title">
+                <h2>应用介绍</h2>
+                <p>两款应用，满足不同需求的铁路爱好者与旅客</p>
+            </div>
+            <div class="apps-container">
+                <!-- EmuAIO 卡片 -->
+                <div class="app-card">
+                    <div class="app-header">
+                        <div class="app-icon aio-icon">
+                            <img src="aio.png" alt="EmuAIO应用图标" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
+                        </div>
+                        <div class="app-title">
+                            <h2>EmuAIO <span class="app-badge available">已上线</span></h2>
+                            <p>动车组信息查询全能工具</p>
+                        </div>
+                    </div>
+                    <div class="app-body">
+                        <p>基于 Flutter 开发的动车组信息查询应用，提供车次查询、车号查询、路局查询、动车图鉴等全方位功能。</p>
+                        <br>
+                        
+                        <div class="app-features">
+                            <div class="feature-item aio-feature">
+                                <div class="feature-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h4>智能查询系统</h4>
+                                    <p>车次、车号、路局多维度查询，支持CRH、CR系列等多种动车组类型</p>
+                                </div>
+                            </div>
+                            <div class="feature-item aio-feature">
+                                <div class="feature-icon">
+                                    <i class="fas fa-images"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h4>完整动车图鉴</h4>
+                                    <p>包含热门车型、检测列车、特殊涂装等完整分类，支持本地和在线图库</p>
+                                </div>
+                            </div>
+                            <div class="feature-item aio-feature">
+                                <div class="feature-icon">
+                                    <i class="fas fa-palette"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h4>主题定制系统</h4>
+                                    <p>支持浅色/深色/深夜模式，可自定义图标包，个性化您的使用体验</p>
+                                </div>
+                            </div>
+                            <div class="feature-item aio-feature">
+                                <div class="feature-icon">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h4>本地数据支持</h4>
+                                    <p>内置完整动车组数据库，支持离线查询，数据实时更新</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="app-actions">
+                            <a href="#download" class="btn btn-primary">
+                                <i class="fas fa-download"></i> 立即下载
+                            </a>
+                            <a href="https://github.com/CrYinLang/EmuAIO" class="btn btn-secondary" target="_blank">
+                                <i class="fab fa-github"></i> 查看源码
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- EmuTravel 卡片 -->
+                <div class="app-card">
+                    <div class="app-header">
+                        <div class="app-icon travel-icon">
+                            <img src="travel.png" alt="EmuAIO应用图标" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
+                        </div>
+                        <div class="app-title">
+                            <h2>EmuTravel <span class="app-badge developing">开发中</span></h2>
+                            <p>列车出行小助手</p>
+                        </div>
+                    </div>
+                    <div class="app-body">
+                        <p>新一代智能出行应用，集成实时列车信息、让铁路出行更简单高效。</p>
+                        <br>
+                        
+                        <div class="app-features">
+                            <div class="feature-item travel-feature">
+                                <div class="feature-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h4>实时列车信息</h4>
+                                    <p>实时列车时刻表查询，延误信息即时推送，让您随时掌握列车动态</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="app-actions">
+                            <button class="btn btn-secondary btn-disabled">
+                                <i class="fas fa-code-branch"></i> 开发中
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技术架构部分 -->
+    <section class="architecture" id="architecture">
+        <div class="container">
+            <div class="section-title">
+                <h2>技术架构</h2>
+                <p>基于现代化技术栈构建的稳定可靠应用</p>
+            </div>
+            <div class="architecture-grid">
+                <div class="arch-card">
+                    <div class="arch-icon">
+                        <img src="flutter.png" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
+                    </div>
+                    <h3>Flutter 框架</h3>
+                    <p>基于 Flutter 开发，支持 iOS 和 Android 双平台，提供流畅的原生性能体验。</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">跨平台</span>
+                        <span class="tech-tag">高性能</span>
+                        <span class="tech-tag">Material Design</span>
+                    </div>
+                </div>
+                <div class="arch-card">
+                    <div class="arch-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>数据管理</h3>
+                    <p>本地数据存储，支持离线查询，配合 API 实现交路查询</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">SQLite</span>
+                        <span class="tech-tag">Network API</span>
+                        <span class="tech-tag">JSON</span>
+                    </div>
+                </div>
+                <div class="arch-card">
+                    <div class="arch-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3>UI/UX 设计</h3>
+                    <p>Material Design 3 设计语言，支持深色/浅色主题切换，响应式布局适配各种屏幕。</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Material Design 3</span>
+                        <span class="tech-tag">响应式</span>
+                        <span class="tech-tag">主题系统</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 下载区域 -->
+    <section class="download" id="download">
+        <div class="container">
+            <div class="download-content">
+                <h2>下载与社区</h2>
+                <p>获取最新版本的应用，加入社区讨论，为项目贡献代码</p>
+                
+                <div class="download-grid">
+                    <!-- EmuAIO 下载卡片 -->
+                    <div class="download-card">
+                        <div class="download-card-header">
+                            <div class="download-card-icon aio-icon">
+                                <i class="fas fa-train"></i>
+                            </div>
+                            <div class="download-card-title">
+                                <h3>EmuAIO</h3>
+                                <p>动车组信息查询全能工具</p>
+                            </div>
+                        </div>
+                        <div class="download-card-body">
+                            <div class="download-links">
+                                <a href="https://github.com/CrYinLang/EmuAIO" class="download-link" target="_blank">
+                                    <div class="link-icon github-icon">
+                                        <i class="fab fa-github"></i>
+                                    </div>
+                                    <div class="link-text">
+                                        <h4>GitHub 仓库</h4>
+                                        <p>查看源代码、提交问题、参与开发</p>
+                                    </div>
+                                </a>
+                                
+                                <a href="https://gitee.com/CrYinLang/EmuAIO" class="download-link" target="_blank">
+                                    <div class="link-icon gitee-icon">
+                                        <i class="fab fa-git-alt"></i>
+                                    </div>
+                                    <div class="link-text">
+                                        <h4>Gitee 仓库</h4>
+                                        <p>国内镜像仓库，访问更快速</p>
+                                    </div>
+                                </a>
+                                
+                                <a href="https://qm.qq.com/q/your-qq-group" class="download-link" target="_blank">
+                                    <div class="link-icon qq-icon">
+                                        <i class="fab fa-qq"></i>
+                                    </div>
+                                    <div class="link-text">
+                                        <h4>QQ 交流群</h4>
+                                        <p>加入QQ群，与其他用户交流使用经验</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- EmuTravel 下载卡片 -->
+                    <div class="download-card">
+                        <div class="download-card-header">
+                            <div class="download-card-icon travel-icon">
+                                <i class="fas fa-route"></i>
+                            </div>
+                            <div class="download-card-title">
+                                <h3>EmuTravel</h3>
+                                <p>列车出行小助手</p>
+                            </div>
+                        </div>
+                        <div class="download-card-body">
+                            <div class="download-links">
+                                <a href="#" class="download-link disabled">
+                                    <div class="link-icon github-icon" style="opacity: 0.6;">
+                                        <i class="fab fa-github"></i>
+                                    </div>
+                                    <div class="link-text">
+                                        <h4>GitHub 仓库</h4>
+                                        <p>项目开发中，即将开放</p>
+                                    </div>
+                                </a>
+                                
+                                <a href="#" class="download-link disabled">
+                                    <div class="link-icon gitee-icon" style="opacity: 0.6;">
+                                        <i class="fab fa-git-alt"></i>
+                                    </div>
+                                    <div class="link-text">
+                                        <h4>Gitee 仓库</h4>
+                                        <p>项目开发中，即将开放</p>
+                                    </div>
+                                </a>
+                                
+                                <a href="#" class="download-link disabled">
+                                    <div class="link-icon qq-icon" style="opacity: 0.6;">
+                                        <i class="fab fa-qq"></i>
+                                    </div>
+                                    <div class="link-text">
+                                        <h4>QQ 交流群</h4>
+                                        <p>项目开发中，暂未开放</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-layer-group"></i> EmuTrain
+                    </div>
+                    <p>EmuTrain 致力于为铁路爱好者和旅客提供专业的应用解决方案。EmuAIO 专注于动车组信息查询，EmuTravel 专注于智能出行体验。</p>
+                    <div class="social-icons">
+                        <a href="https://github.com/CrYinLang" class="social-icon github" target="_blank">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-icon douyin">
+                            <i class="fab fa-douyin"></i>
+                        </a>
+                        <a href="#" class="social-icon qq">
+                            <i class="fab fa-qq"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>应用</h4>
+                        <ul>
+                            <li><a href="#apps">EmuAIO</a></li>
+                            <li><a href="#apps">EmuTravel</a></li>
+                            <li><a href="#download">下载与社区</a></li>
+                        </ul>
+                    </div>
+                    <div class="link-group">
+                        <h4>支持</h4>
+                        <ul>
+                            <li><a href="#">帮助文档</a></li>
+                            <li><a href="#">常见问题</a></li>
+                            <li><a href="#">问题反馈</a></li>
+                            <li><a href="#">更新日志</a></li>
+                        </ul>
+                    </div>
+                    <div class="link-group">
+                        <h4>法律</h4>
+                        <ul>
+                            <li><a href="#">隐私政策</a></li>
+                            <li><a href="#">用户协议</a></li>
+                            <li><a href="#">开源许可</a></li>
+                            <li><a href="#">数据使用</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 EmuTrain. 版权所有。EmuAIO 和 EmuTravel 是 EmuTrain 的注册商标。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 移动菜单切换
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId.startsWith('#')) {
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // 关闭移动菜单
+                        document.getElementById('navMenu').classList.remove('active');
+                    }
+                }
+            });
+        });
+        
+        // 禁用链接点击事件
+        document.querySelectorAll('.download-link.disabled').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+            });
+        });
+        
+        // 添加 Font Awesome Flutter 图标
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .fa-flutter:before {
+                content: "F";
+                font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+                font-weight: bold;
+                font-size: 0.9em;
+            }
+            
+            /* Gitee 图标样式 */
+            .fa-git-alt:before {
+                content: "码";
+                font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+                font-weight: bold;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
