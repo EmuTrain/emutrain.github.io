@@ -1,0 +1,1 @@
+import{_ as a,o as r,c as t,ai as i}from"./chunks/framework.DpImJups.js";const u=JSON.parse('{"title":"下载链接","description":"","frontmatter":{},"headers":[],"relativePath":"download.md","filePath":"download.md"}'),l={name:"download.md"};function n(h,e,s,o,m,d){return r(),t("div",null,[...e[0]||(e[0]=[i("",12)])])}const b=a(l,[["render",n]]);export{u as __pageData,b as default};
